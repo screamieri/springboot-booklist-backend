@@ -3,8 +3,11 @@ package com.andreascrimieri.bookapp.BookApp.model;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
+@Table(name ="book")
 public class Book implements Serializable {
 
     @Id
@@ -19,10 +22,20 @@ public class Book implements Serializable {
     private String description;
     private Date publishDate;
 
+    @ManyToMany(cascade = {
+      CascadeType.PERSIST,
+      CascadeType.MERGE
+    })
+    @JoinTable(name = "user_book",
+            joinColumns = @JoinColumn(name = "book_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id")
+    )
+    private Set<User> users = new HashSet<>();
+
     public Book() {
     }
 
-    public Book(String isbn, String title, String author, String publisher, String genre, String description, Date publishDate) {
+    public Book(String isbn, String title, String author, String publisher, String genre, String description, Date publishDate, Set<User> users) {
         this.isbn = isbn;
         this.title = title;
         this.author = author;
@@ -30,9 +43,10 @@ public class Book implements Serializable {
         this.genre = genre;
         this.description = description;
         this.publishDate = publishDate;
+        this.users = users;
     }
 
-    public Book(Long id, String isbn, String title, String author, String publisher, String genre, String description, Date publishDate) {
+    public Book(Long id, String isbn, String title, String author, String publisher, String genre, String description, Date publishDate, Set<User> users) {
         this.id = id;
         this.isbn = isbn;
         this.title = title;
@@ -41,6 +55,7 @@ public class Book implements Serializable {
         this.genre = genre;
         this.description = description;
         this.publishDate = publishDate;
+        this.users = users;
     }
 
     public Long getId() {
@@ -106,6 +121,21 @@ public class Book implements Serializable {
     public void setPublishDate(Date publishDate) {
         this.publishDate = publishDate;
     }
+
+    public Set<User> getUsers() {
+        return users;
+    }
+
+    public void addUser(User user){
+        users.add(user);
+        user.getBooks().add(this);
+    }
+
+    public void removeUser(User user){
+        users.remove(user);
+        user.getBooks().remove(this);
+    }
+
 
     @Override
     public String toString() {

@@ -13,12 +13,8 @@ import java.util.List;
 @Transactional
 public class UserService {
 
-    private final UserRepository userRepository;
-
     @Autowired
-    public UserService(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
+    private UserRepository userRepository;
 
     public List<User> findAllUsers(){
         return userRepository.findAll();
