@@ -10,10 +10,7 @@ import java.util.Optional;
 
 public interface BookRepository extends JpaRepository<Book, Long> {
 
-    void deleteBookById(Long id);
-
     Optional<Book> findBookById(Long id);
-
     List<Book> findBookByTitleContainingIgnoreCase(String title);
 
 }
