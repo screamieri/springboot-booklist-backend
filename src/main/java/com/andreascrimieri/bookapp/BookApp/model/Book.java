@@ -16,27 +16,30 @@ public class Book implements Serializable {
     private String author;
     private String publisher;
     private String genre;
+    private String description;
     private Date publishDate;
 
     public Book() {
     }
 
-    public Book(String isbn, String title, String author, String publisher, String genre, Date publishDate) {
+    public Book(String isbn, String title, String author, String publisher, String genre, String description, Date publishDate) {
         this.isbn = isbn;
         this.title = title;
         this.author = author;
         this.publisher = publisher;
         this.genre = genre;
+        this.description = description;
         this.publishDate = publishDate;
     }
 
-    public Book(Long id, String isbn, String title, String author, String publisher, String genre, Date publishDate) {
+    public Book(Long id, String isbn, String title, String author, String publisher, String genre, String description, Date publishDate) {
         this.id = id;
         this.isbn = isbn;
         this.title = title;
         this.author = author;
         this.publisher = publisher;
         this.genre = genre;
+        this.description = description;
         this.publishDate = publishDate;
     }
 
@@ -88,6 +91,14 @@ public class Book implements Serializable {
         this.genre = genre;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     public Date getPublishDate() {
         return publishDate;
     }
@@ -105,6 +116,7 @@ public class Book implements Serializable {
                 ", author='" + author + '\'' +
                 ", publisher='" + publisher + '\'' +
                 ", genre='" + genre + '\'' +
+                ", description='" + description + '\'' +
                 ", publishDate=" + publishDate +
                 '}';
     }
