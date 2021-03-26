@@ -2,6 +2,7 @@ package com.andreascrimieri.bookapp.BookApp.model;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Date;
 
 @Entity
 public class Book implements Serializable {
@@ -14,23 +15,29 @@ public class Book implements Serializable {
     private String title;
     private String author;
     private String publisher;
+    private String genre;
+    private Date publishDate;
 
     public Book() {
     }
 
-    public Book(String isbn, String title, String author, String publisher) {
+    public Book(String isbn, String title, String author, String publisher, String genre, Date publishDate) {
         this.isbn = isbn;
         this.title = title;
         this.author = author;
         this.publisher = publisher;
+        this.genre = genre;
+        this.publishDate = publishDate;
     }
 
-    public Book(Long id, String isbn, String title, String author, String publisher) {
+    public Book(Long id, String isbn, String title, String author, String publisher, String genre, Date publishDate) {
         this.id = id;
         this.isbn = isbn;
         this.title = title;
         this.author = author;
         this.publisher = publisher;
+        this.genre = genre;
+        this.publishDate = publishDate;
     }
 
     public Long getId() {
@@ -73,6 +80,22 @@ public class Book implements Serializable {
         this.publisher = publisher;
     }
 
+    public String getGenre() {
+        return genre;
+    }
+
+    public void setGenre(String genre) {
+        this.genre = genre;
+    }
+
+    public Date getPublishDate() {
+        return publishDate;
+    }
+
+    public void setPublishDate(Date publishDate) {
+        this.publishDate = publishDate;
+    }
+
     @Override
     public String toString() {
         return "Book{" +
@@ -81,6 +104,8 @@ public class Book implements Serializable {
                 ", title='" + title + '\'' +
                 ", author='" + author + '\'' +
                 ", publisher='" + publisher + '\'' +
+                ", genre='" + genre + '\'' +
+                ", publishDate=" + publishDate +
                 '}';
     }
 }
