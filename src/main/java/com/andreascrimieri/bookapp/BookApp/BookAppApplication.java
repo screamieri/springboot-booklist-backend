@@ -1,6 +1,5 @@
 package com.andreascrimieri.bookapp.BookApp;
 
-import com.andreascrimieri.bookapp.BookApp.model.User;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
