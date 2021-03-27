@@ -48,11 +48,11 @@ public class UserService {
     }
 
 
-    public List<Book> getAllUserBooks(Long id){
+    public List<Book> findAllBooksForUser(Long id){
         return bookService.getAllBooksByUserId(id);
     }
 
-    public List<User> getAllUsersByBookId(Long id){
+    public List<User> findAllUsersForBook(Long id){
         return userRepository.findByBooks_id(id);
     }
 

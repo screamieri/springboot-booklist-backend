@@ -50,7 +50,7 @@ public class UserResource {
 
     @GetMapping("/{id}/books")
     public ResponseEntity<List<Book>> getAllUserBooks(@PathVariable("id") Long id){
-        List<Book> books = userService.getAllUserBooks(id);
+        List<Book> books = userService.findAllBooksForUser(id);
         return new ResponseEntity<>(books, HttpStatus.OK);
     }
 

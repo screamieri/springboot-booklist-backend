@@ -49,7 +49,7 @@ public class BookService {
     }
 
     public List<User> getAllUsersByBookId(Long id){
-        return userService.getAllUsersByBookId(id);
+        return userService.findAllUsersForBook(id);
     }
 
 }
