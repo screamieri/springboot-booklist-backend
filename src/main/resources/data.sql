@@ -11,4 +11,5 @@ INSERT INTO user (id, email, first_name, last_name, password) VALUES
 
 INSERT INTO user_book (book_id, user_id) VALUES
     (4, 7),
-    (6, 7);
+    (6, 7),
+    (6, 1);
