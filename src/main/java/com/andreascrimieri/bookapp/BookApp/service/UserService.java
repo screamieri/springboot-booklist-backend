@@ -52,6 +52,10 @@ public class UserService {
         return bookService.getAllBooksByUserId(id);
     }
 
+    public List<User> getAllUsersByBookId(Long id){
+        return userRepository.findByBooks_id(id);
+    }
+
 
 
 }

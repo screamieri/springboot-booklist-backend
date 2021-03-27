@@ -1,6 +1,7 @@
 package com.andreascrimieri.bookapp.BookApp.resource;
 
 import com.andreascrimieri.bookapp.BookApp.model.Book;
+import com.andreascrimieri.bookapp.BookApp.model.User;
 import com.andreascrimieri.bookapp.BookApp.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -51,6 +52,12 @@ public class BookResource {
     public ResponseEntity<?> deleteBook(@PathVariable("id") Long id){
         bookService.deleteBook(id);
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @GetMapping("/{book_id}/users")
+    public ResponseEntity<List<User>> getAllUsersWithBook(@PathVariable("book_id") Long id){
+        List<User> users = bookService.getAllUsersByBookId(id);
+        return new ResponseEntity<>(users, HttpStatus.OK);
     }
 
 }
