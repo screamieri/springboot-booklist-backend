@@ -1,5 +1,7 @@
 package com.andreascrimieri.bookapp.BookApp.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
@@ -30,6 +32,7 @@ public class Book implements Serializable {
             joinColumns = @JoinColumn(name = "book_id"),
             inverseJoinColumns = @JoinColumn(name = "user_id")
     )
+    @JsonIgnore
     private Set<User> users = new HashSet<>();
 
     public Book() {

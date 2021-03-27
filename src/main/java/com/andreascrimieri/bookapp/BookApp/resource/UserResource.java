@@ -1,5 +1,6 @@
 package com.andreascrimieri.bookapp.BookApp.resource;
 
+import com.andreascrimieri.bookapp.BookApp.model.Book;
 import com.andreascrimieri.bookapp.BookApp.model.User;
 import com.andreascrimieri.bookapp.BookApp.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,6 +45,20 @@ public class UserResource {
     public ResponseEntity<?> deleteUser(@PathVariable("id") Long id){
         userService.deleteUserById(id);
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+
+    @GetMapping("/{id}/books")
+    public ResponseEntity<List<Book>> getAllUserBooks(@PathVariable("id") Long id){
+        List<Book> books = userService.getAllUserBooks(id);
+        return new ResponseEntity<>(books, HttpStatus.OK);
+    }
+
+
+    @PutMapping("/{user_id}/book/{book_id}")
+    public ResponseEntity<User> addUserBook(@PathVariable("user_id") Long userId, @PathVariable("book_id") Long bookId){
+        User updatedUser = userService.addBookToUser(userId, bookId);
+        return new ResponseEntity<>(updatedUser, HttpStatus.OK);
     }
 
 }
