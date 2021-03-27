@@ -1,6 +1,8 @@
 package com.andreascrimieri.bookapp.BookApp.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.NaturalId;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -11,11 +13,13 @@ import java.util.Set;
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(nullable = false, updatable = false)
-    private Long id;
+    @GeneratedValue(generator="uuid")
+    @GenericGenerator(name = "uuid", strategy = "uuid2")
+    @Column(name = "uuid", nullable = false, updatable = false, unique = true)
+    private String id;
     private String firstName;
     private String lastName;
+    @NaturalId
     private String email;
     private String password;
 
@@ -34,7 +38,7 @@ public class User {
         this.books = books;
     }
 
-    public User(Long id, String firstName, String lastName, String email, String password, Set<Book> books) {
+    public User(String id, String firstName, String lastName, String email, String password, Set<Book> books) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -43,7 +47,7 @@ public class User {
         this.books = books;
     }
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 

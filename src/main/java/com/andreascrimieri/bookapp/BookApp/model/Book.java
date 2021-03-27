@@ -1,6 +1,8 @@
 package com.andreascrimieri.bookapp.BookApp.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.NaturalId;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -13,9 +15,10 @@ import java.util.Set;
 public class Book implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(nullable = false, updatable = false)
-    private Long id;
+    @GeneratedValue(generator="uuid")
+    @GenericGenerator(name = "uuid", strategy = "uuid2")
+    @Column(name = "uuid", nullable = false, updatable = false, unique = true)
+    private String id;
     private String isbn;
     private String title;
     private String author;
@@ -50,7 +53,7 @@ public class Book implements Serializable {
         this.users = users;
     }
 
-    public Book(Long id, String isbn, String title, String author, String publisher, String genre, String description, Date publishDate, Set<User> users) {
+    public Book(String id, String isbn, String title, String author, String publisher, String genre, String description, Date publishDate, Set<User> users) {
         this.id = id;
         this.isbn = isbn;
         this.title = title;
@@ -62,11 +65,11 @@ public class Book implements Serializable {
         this.users = users;
     }
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 

@@ -25,7 +25,7 @@ public class BookResource {
     }
 
     @GetMapping("/find/id/{id}")
-    public ResponseEntity<Book> getBookByTitle(@PathVariable("id") Long id){
+    public ResponseEntity<Book> getBookById(@PathVariable("id") String id){
         Book book = bookService.findBookById(id);
         return new ResponseEntity<>(book, HttpStatus.OK);
     }
@@ -49,13 +49,13 @@ public class BookResource {
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<?> deleteBook(@PathVariable("id") Long id){
+    public ResponseEntity<?> deleteBook(@PathVariable("id") String id){
         bookService.deleteBook(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @GetMapping("/{book_id}/users")
-    public ResponseEntity<List<User>> getAllUsersWithBook(@PathVariable("book_id") Long id){
+    public ResponseEntity<List<User>> getAllUsersWithBook(@PathVariable("book_id") String id){
         List<User> users = bookService.getAllUsersByBookId(id);
         return new ResponseEntity<>(users, HttpStatus.OK);
     }

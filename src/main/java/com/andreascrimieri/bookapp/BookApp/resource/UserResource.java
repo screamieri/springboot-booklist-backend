@@ -24,7 +24,7 @@ public class UserResource {
     }
 
     @GetMapping("/find/id/{id}")
-    public ResponseEntity<User> getUserById(@PathVariable("id") Long id){
+    public ResponseEntity<User> getUserById(@PathVariable("id") String id){
         User user = userService.findUserById(id);
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
@@ -42,21 +42,21 @@ public class UserResource {
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<?> deleteUser(@PathVariable("id") Long id){
+    public ResponseEntity<?> deleteUser(@PathVariable("id") String id){
         userService.deleteUserById(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
 
     @GetMapping("/{id}/books")
-    public ResponseEntity<List<Book>> getAllUserBooks(@PathVariable("id") Long id){
+    public ResponseEntity<List<Book>> getAllUserBooks(@PathVariable("id") String id){
         List<Book> books = userService.findAllBooksForUser(id);
         return new ResponseEntity<>(books, HttpStatus.OK);
     }
 
 
     @PutMapping("/{user_id}/book/{book_id}")
-    public ResponseEntity<User> addUserBook(@PathVariable("user_id") Long userId, @PathVariable("book_id") Long bookId){
+    public ResponseEntity<User> addUserBook(@PathVariable("user_id") String userId, @PathVariable("book_id") String bookId){
         User updatedUser = userService.addBookToUser(userId, bookId);
         return new ResponseEntity<>(updatedUser, HttpStatus.OK);
     }

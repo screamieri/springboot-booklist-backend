@@ -24,7 +24,7 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public User findUserById(Long id){
+    public User findUserById(String id){
         return userRepository.findById(id).orElseThrow(() -> new UserNotFoundException("The user with id "+ id +" was not found"));
     }
 
@@ -36,11 +36,11 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    public void deleteUserById(Long id){
+    public void deleteUserById(String id){
         userRepository.deleteById(id);
     }
 
-    public User addBookToUser(Long userId, Long bookId){
+    public User addBookToUser(String userId, String bookId){
         Book book = bookService.findBookById(bookId);
         User user = this.findUserById(userId);
         user.addBook(book);
@@ -48,11 +48,11 @@ public class UserService {
     }
 
 
-    public List<Book> findAllBooksForUser(Long id){
+    public List<Book> findAllBooksForUser(String id){
         return bookService.getAllBooksByUserId(id);
     }
 
-    public List<User> findAllUsersForBook(Long id){
+    public List<User> findAllUsersForBook(String id){
         return userRepository.findByBooks_id(id);
     }
 

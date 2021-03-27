@@ -28,7 +28,7 @@ public class BookService {
         return bookRepository.save(book);
     }
 
-    public Book findBookById(Long id){
+    public Book findBookById(String id){
         return bookRepository.findBookById(id).orElseThrow(() -> new BookNotFoundException("Book by id "+ id +" was not found"));
     }
 
@@ -40,15 +40,15 @@ public class BookService {
         return bookRepository.save(book);
     }
 
-    public void deleteBook(Long id){
+    public void deleteBook(String id){
         bookRepository.deleteById(id);
     }
 
-    public List<Book> getAllBooksByUserId(Long id){
+    public List<Book> getAllBooksByUserId(String id){
         return bookRepository.findByUsers_id(id);
     }
 
-    public List<User> getAllUsersByBookId(Long id){
+    public List<User> getAllUsersByBookId(String id){
         return userService.findAllUsersForBook(id);
     }
 
