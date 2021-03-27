@@ -21,6 +21,7 @@ public class Book implements Serializable {
     private String author;
     private String publisher;
     private String genre;
+    @Lob
     private String description;
     private Date publishDate;
 
