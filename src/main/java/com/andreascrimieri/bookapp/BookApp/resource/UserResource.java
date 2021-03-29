@@ -47,13 +47,11 @@ public class UserResource {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-
     @GetMapping("/{id}/books")
     public ResponseEntity<List<Book>> getAllUserBooks(@PathVariable("id") String id){
         List<Book> books = userService.findAllBooksForUser(id);
         return new ResponseEntity<>(books, HttpStatus.OK);
     }
-
 
     @PutMapping("/{user_id}/book/{book_id}")
     public ResponseEntity<User> addUserBook(@PathVariable("user_id") String userId, @PathVariable("book_id") String bookId){
