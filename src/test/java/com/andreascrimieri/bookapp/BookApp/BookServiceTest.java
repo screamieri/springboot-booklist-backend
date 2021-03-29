@@ -10,25 +10,24 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.web.servlet.MockMvc;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
 @RunWith(SpringRunner.class)
 @TestPropertySource(locations="classpath:application-test.properties")
 @AutoConfigureMockMvc
-class BookAppApplicationTests {
+class BookServiceTest {
+
 
 	@Autowired
 	BookService bookService;
+
 	@Autowired
 	UserService userService;
 
-	@Autowired
-	private MockMvc mockMvc;
 
 	@Test
-	public void userIdGetShouldReturnUserJson(){
+	public void shouldFetchAllBooks() throws Exception{
 
 	}
 
