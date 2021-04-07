@@ -18,13 +18,20 @@ public class Book implements Serializable {
     @GenericGenerator(name = "uuid", strategy = "uuid2")
     @Column(name = "uuid", nullable = false, updatable = false, unique = true)
     private String id;
+    @Column(name="isbn", nullable=false)
     private String isbn;
+    @Column(name="title", nullable=false)
     private String title;
+    @Column(name = "author", nullable=false)
     private String author;
+    @Column(name="publisher", nullable=false)
     private String publisher;
+    @Column(name="genre", nullable=false)
     private String genre;
+    @Column(name="description", nullable=false)
     @Lob
     private String description;
+    @Column(name="publishDate", nullable=false)
     private Date publishDate;
 
     @ManyToMany(cascade = {

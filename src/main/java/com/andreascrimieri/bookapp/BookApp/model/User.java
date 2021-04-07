@@ -14,11 +14,15 @@ public class User {
     @Id
     @GeneratedValue(generator="uuid")
     @GenericGenerator(name = "uuid", strategy = "uuid2")
-    @Column(name = "uuid", nullable = false, updatable = false, unique = true)
+    @Column(name = "uuid", nullable=false, updatable=false, unique=true)
     private String id;
+    @Column(name="firstName", nullable=false)
     private String firstName;
+    @Column(name="lastName", nullable=false)
     private String lastName;
+    @Column(name="email", nullable=false)
     private String email;
+    @Column(name="password", nullable=false)
     private String password;
 
     @ManyToMany(mappedBy = "users")
