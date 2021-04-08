@@ -7,6 +7,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -28,20 +29,14 @@ public class Book implements Serializable {
     private String publisher;
     @Column(name="genre", nullable=false)
     private String genre;
+    
     @Column(name="description", nullable=false)
     @Lob
     private String description;
     @Column(name="publishDate", nullable=false)
     private Date publishDate;
 
-    @ManyToMany(cascade = {
-      CascadeType.PERSIST,
-      CascadeType.MERGE
-    })
-    @JoinTable(name = "user_book",
-            joinColumns = @JoinColumn(name = "book_id"),
-            inverseJoinColumns = @JoinColumn(name = "user_id")
-    )
+    @ManyToMany(mappedBy = "books")
     @JsonIgnore
     private Set<User> users = new HashSet<>();
 
@@ -162,5 +157,22 @@ public class Book implements Serializable {
                 ", description='" + description + '\'' +
                 ", publishDate=" + publishDate +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Book)) return false;
+        Book book = (Book) o;
+        return isbn.equals(book.isbn) &&
+                title.equals(book.title) &&
+                author.equals(book.author) &&
+                publisher.equals(book.publisher) &&
+                publishDate.equals(book.publishDate);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(isbn, title, author, publisher, publishDate);
     }
 }
