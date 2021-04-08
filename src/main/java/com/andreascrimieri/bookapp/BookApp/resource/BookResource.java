@@ -12,7 +12,7 @@ import java.util.List;
 
 
 @RestController
-@RequestMapping("API/book")
+@RequestMapping("api/book")
 public class BookResource {
 
     @Autowired
