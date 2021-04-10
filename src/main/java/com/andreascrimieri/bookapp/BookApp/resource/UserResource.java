@@ -11,7 +11,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/user")
+@CrossOrigin
+@RequestMapping("/api/v1/user")
 public class UserResource {
 
     @Autowired
@@ -56,6 +57,12 @@ public class UserResource {
     @PutMapping("/{user_id}/book/{book_id}")
     public ResponseEntity<User> addUserBook(@PathVariable("user_id") String userId, @PathVariable("book_id") String bookId){
         User updatedUser = userService.addBookToUser(userId, bookId);
+        return new ResponseEntity<>(updatedUser, HttpStatus.OK);
+    }
+
+    @PutMapping("/{user_id}/book/add")
+    public ResponseEntity<User> addUserBook(@PathVariable("user_id") String userId, @RequestBody Book book){
+        User updatedUser = userService.addBookToUser(userId, book);
         return new ResponseEntity<>(updatedUser, HttpStatus.OK);
     }
 

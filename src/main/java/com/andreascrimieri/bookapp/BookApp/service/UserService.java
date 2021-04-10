@@ -47,6 +47,17 @@ public class UserService {
         return user;
     }
 
+    public User addBookToUser(String userId, Book book){
+        Book foundBook = bookService.findBookByIsbn(book.getIsbn());
+        User user = this.findUserById(userId);
+        if(foundBook == null){
+            user.addBook(book);
+        } else {
+            user.addBook(foundBook);
+        }
+        return user;
+    }
+
 
     public List<Book> findAllBooksForUser(String id){
         return bookService.getAllBooksByUserId(id);

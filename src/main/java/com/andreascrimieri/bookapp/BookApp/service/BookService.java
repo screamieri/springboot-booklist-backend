@@ -44,6 +44,10 @@ public class BookService {
         bookRepository.deleteById(id);
     }
 
+    public Book findBookByIsbn(String ibsn){
+        return bookRepository.findBookByIsbn(ibsn).orElse(null);
+    }
+
     public List<Book> getAllBooksByUserId(String id){
         return bookRepository.findByUsers_id(id);
     }
