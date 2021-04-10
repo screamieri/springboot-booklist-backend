@@ -21,6 +21,8 @@ public class Book implements Serializable {
     private String id;
     @Column(name="isbn", nullable=false)
     private String isbn;
+    @Column(name="isbn13", nullable=false)
+    private String isbn13;
     @Column(name="title", nullable=false)
     private String title;
     @Column(name = "author", nullable=false)
@@ -29,12 +31,13 @@ public class Book implements Serializable {
     private String publisher;
     @Column(name="genre", nullable=false)
     private String genre;
-    
     @Column(name="description", nullable=false)
     @Lob
     private String description;
     @Column(name="publishDate", nullable=false)
     private Date publishDate;
+    @Column(name="imagePath", nullable=false)
+    private String imageUrl;
 
     @ManyToMany(mappedBy = "books")
     @JsonIgnore
@@ -43,8 +46,9 @@ public class Book implements Serializable {
     public Book() {
     }
 
-    public Book(String isbn, String title, String author, String publisher, String genre, String description, Date publishDate, Set<User> users) {
+    public Book(String isbn, String isbn13, String title, String author, String publisher, String genre, String description, Date publishDate, Set<User> users, String imageUrl) {
         this.isbn = isbn;
+        this.isbn13 = isbn13;
         this.title = title;
         this.author = author;
         this.publisher = publisher;
@@ -52,11 +56,13 @@ public class Book implements Serializable {
         this.description = description;
         this.publishDate = publishDate;
         this.users = users;
+        this.imageUrl = imageUrl;
     }
 
-    public Book(String id, String isbn, String title, String author, String publisher, String genre, String description, Date publishDate, Set<User> users) {
+    public Book(String id, String isbn, String isbn13, String title, String author, String publisher, String genre, String description, Date publishDate, Set<User> users, String imageUrl) {
         this.id = id;
         this.isbn = isbn;
+        this.isbn13 = isbn13;
         this.title = title;
         this.author = author;
         this.publisher = publisher;
@@ -64,6 +70,7 @@ public class Book implements Serializable {
         this.description = description;
         this.publishDate = publishDate;
         this.users = users;
+        this.imageUrl = imageUrl;
     }
 
     public String getId() {
@@ -78,8 +85,28 @@ public class Book implements Serializable {
         return isbn;
     }
 
+    public String getIsbn13() {
+        return isbn13;
+    }
+
+    public void setIsbn13(String isbn13) {
+        this.isbn13 = isbn13;
+    }
+
+    public void setUsers(Set<User> users) {
+        this.users = users;
+    }
+
     public void setIsbn(String isbn) {
         this.isbn = isbn;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 
     public String getTitle() {
