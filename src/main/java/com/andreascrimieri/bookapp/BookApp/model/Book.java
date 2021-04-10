@@ -5,7 +5,7 @@ import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -35,7 +35,7 @@ public class Book implements Serializable {
     @Lob
     private String description;
     @Column(name="publishDate", nullable=false)
-    private Date publishDate;
+    private LocalDate publishDate;
     @Column(name="imagePath", nullable=false)
     private String imageUrl;
 
@@ -46,7 +46,7 @@ public class Book implements Serializable {
     public Book() {
     }
 
-    public Book(String isbn, String isbn13, String title, String author, String publisher, String genre, String description, Date publishDate, Set<User> users, String imageUrl) {
+    public Book(String isbn, String isbn13, String title, String author, String publisher, String genre, String description, LocalDate publishDate, Set<User> users, String imageUrl) {
         this.isbn = isbn;
         this.isbn13 = isbn13;
         this.title = title;
@@ -59,7 +59,7 @@ public class Book implements Serializable {
         this.imageUrl = imageUrl;
     }
 
-    public Book(String id, String isbn, String isbn13, String title, String author, String publisher, String genre, String description, Date publishDate, Set<User> users, String imageUrl) {
+    public Book(String id, String isbn, String isbn13, String title, String author, String publisher, String genre, String description, LocalDate publishDate, Set<User> users, String imageUrl) {
         this.id = id;
         this.isbn = isbn;
         this.isbn13 = isbn13;
@@ -149,11 +149,11 @@ public class Book implements Serializable {
         this.description = description;
     }
 
-    public Date getPublishDate() {
+    public LocalDate getPublishDate() {
         return publishDate;
     }
 
-    public void setPublishDate(Date publishDate) {
+    public void setPublishDate(LocalDate publishDate) {
         this.publishDate = publishDate;
     }
 
