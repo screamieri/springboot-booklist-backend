@@ -19,9 +19,9 @@ public class Book implements Serializable {
     @GenericGenerator(name = "uuid", strategy = "uuid2")
     @Column(name = "uuid", nullable = false, updatable = false, unique = true)
     private String id;
-    @Column(name="isbn", nullable=false)
+    @Column(name="isbn", nullable=true)
     private String isbn;
-    @Column(name="isbn13", nullable=false)
+    @Column(name="isbn13", nullable=true)
     private String isbn13;
     @Column(name="title", nullable=false)
     private String title;

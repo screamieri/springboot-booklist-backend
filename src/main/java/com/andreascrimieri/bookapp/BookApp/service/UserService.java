@@ -28,6 +28,10 @@ public class UserService {
         return userRepository.findById(id).orElseThrow(() -> new UserNotFoundException("The user with id "+ id +" was not found"));
     }
 
+    public User findUserByEmail(String email){
+        return userRepository.findByEmail(email).orElseThrow(() -> new UserNotFoundException("The user with email "+ email +" was not found"));
+    }
+
     public User addUser(User user){
         return userRepository.save(user);
     }
