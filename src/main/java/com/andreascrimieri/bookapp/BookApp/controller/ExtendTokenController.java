@@ -12,15 +12,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @CrossOrigin("http://localhost:4200")
-public class AuthenticationController {
-
+public class ExtendTokenController {
     @Autowired
     private JwtUtil jwtUtil;
 
     @Autowired
     private AuthenticationManager authenticationManager;
 
-    @PostMapping("/authenticate")
+    @PostMapping("/refresh-token")
     public String generateToken(@RequestBody AuthRequest authRequest) throws Exception {
         try {
             authenticationManager.authenticate(
@@ -30,8 +29,6 @@ public class AuthenticationController {
             throw new Exception("Invalid username/password");
         }
 
-        return jwtUtil.generateToken(authRequest.getEmail());
+        return jwtUtil.generateRefreshedtoken(authRequest.getEmail());
     }
-
-
 }

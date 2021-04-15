@@ -1,8 +1,12 @@
 package com.andreascrimieri.bookapp.BookApp.util;
 
+import com.andreascrimieri.bookapp.BookApp.model.User;
+import com.andreascrimieri.bookapp.BookApp.service.UserService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -13,7 +17,29 @@ import java.util.function.Function;
 
 @Service
 public class JwtUtil {
-    private String secret = "booklistwebapp";
+
+    private String secret;
+    private int jwtExpirationInMs;
+    private int refreshExpirationDateInMs;
+
+
+    @Value("${jwt.secret}")
+    public void setSecret(String secret){
+        this.secret = secret;
+    }
+
+    @Value("${jwt.expirationDateInMs}")
+    public void setJwtExpirationInMs(int jwtExpirationInMs){
+        this.jwtExpirationInMs = jwtExpirationInMs;
+    }
+
+    @Value("${jwt.refreshExpirationDateInMs}")
+    public void setRefreshExpirationDateInMs(int refreshExpirationDateInMs){
+        this.refreshExpirationDateInMs = refreshExpirationDateInMs;
+    }
+
+    @Autowired
+    UserService userService;
 
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
@@ -37,13 +63,29 @@ public class JwtUtil {
 
     public String generateToken(String username) {
         Map<String, Object> claims = new HashMap<>();
+        User user = this.userService.findUserByEmail(username);
+        claims.put("userId", user.getId());
         return createToken(claims, username);
+    }
+
+    public String generateRefreshedtoken(String username) {
+        Map<String, Object> claims = new HashMap<>();
+        User user = this.userService.findUserByEmail(username);
+        claims.put("userId", user.getId());
+        return refreshToken(claims, username);
     }
 
     private String createToken(Map<String, Object> claims, String subject) {
 
         return Jwts.builder().setClaims(claims).setSubject(subject).setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10))
+                .setExpiration(new Date(System.currentTimeMillis() + jwtExpirationInMs))
+                .signWith(SignatureAlgorithm.HS256, secret).compact();
+    }
+
+    private String refreshToken(Map<String, Object> claims, String subject) {
+
+        return Jwts.builder().setClaims(claims).setSubject(subject).setIssuedAt(new Date(System.currentTimeMillis()))
+                .setExpiration(new Date(System.currentTimeMillis() + refreshExpirationDateInMs))
                 .signWith(SignatureAlgorithm.HS256, secret).compact();
     }
 
