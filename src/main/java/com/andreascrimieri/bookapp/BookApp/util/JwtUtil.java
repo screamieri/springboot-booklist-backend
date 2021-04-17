@@ -2,95 +2,87 @@ package com.andreascrimieri.bookapp.BookApp.util;
 
 import com.andreascrimieri.bookapp.BookApp.model.User;
 import com.andreascrimieri.bookapp.BookApp.service.UserService;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.function.Function;
+import java.util.*;
 
 @Service
 public class JwtUtil {
 
+    @Autowired
+    private UserService userService;
+
     private String secret;
     private int jwtExpirationInMs;
-    private int refreshExpirationDateInMs;
-
 
     @Value("${jwt.secret}")
-    public void setSecret(String secret){
+    public void setSecret(String secret) {
         this.secret = secret;
     }
 
     @Value("${jwt.expirationDateInMs}")
-    public void setJwtExpirationInMs(int jwtExpirationInMs){
+    public void setJwtExpirationInMs(int jwtExpirationInMs) {
         this.jwtExpirationInMs = jwtExpirationInMs;
     }
 
-    @Value("${jwt.refreshExpirationDateInMs}")
-    public void setRefreshExpirationDateInMs(int refreshExpirationDateInMs){
-        this.refreshExpirationDateInMs = refreshExpirationDateInMs;
-    }
-
-    @Autowired
-    UserService userService;
-
-    public String extractUsername(String token) {
-        return extractClaim(token, Claims::getSubject);
-    }
-
-    public Date extractExpiration(String token) {
-        return extractClaim(token, Claims::getExpiration);
-    }
-
-    public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
-        final Claims claims = extractAllClaims(token);
-        return claimsResolver.apply(claims);
-    }
-    private Claims extractAllClaims(String token) {
-        return Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody();
-    }
-
-    private Boolean isTokenExpired(String token) {
-        return extractExpiration(token).before(new Date());
-    }
-
-    public String generateToken(String username) {
+    // generate token for user
+    public String generateToken(UserDetails userDetails) {
         Map<String, Object> claims = new HashMap<>();
-        User user = this.userService.findUserByEmail(username);
+        Collection<? extends GrantedAuthority> roles = userDetails.getAuthorities();
+        User user = this.userService.findUserByEmail(userDetails.getUsername());
         claims.put("userId", user.getId());
-        return createToken(claims, username);
+
+        if (roles.contains(new SimpleGrantedAuthority("ROLE_ADMIN"))) {
+            claims.put("isAdmin", true);
+        }
+        if (roles.contains(new SimpleGrantedAuthority("ROLE_USER"))) {
+            claims.put("isUser", true);
+        }
+        return doGenerateToken(claims, userDetails.getUsername());
     }
 
-    public String generateRefreshedtoken(String username) {
-        Map<String, Object> claims = new HashMap<>();
-        User user = this.userService.findUserByEmail(username);
-        claims.put("userId", user.getId());
-        return refreshToken(claims, username);
-    }
-
-    private String createToken(Map<String, Object> claims, String subject) {
+    private String doGenerateToken(Map<String, Object> claims, String subject) {
 
         return Jwts.builder().setClaims(claims).setSubject(subject).setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + jwtExpirationInMs))
-                .signWith(SignatureAlgorithm.HS256, secret).compact();
+                .setExpiration(new Date(System.currentTimeMillis() + jwtExpirationInMs)).signWith(SignatureAlgorithm.HS256, secret).compact();
     }
 
-    private String refreshToken(Map<String, Object> claims, String subject) {
-
-        return Jwts.builder().setClaims(claims).setSubject(subject).setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + refreshExpirationDateInMs))
-                .signWith(SignatureAlgorithm.HS256, secret).compact();
+    public boolean validateToken(String authToken) {
+        try {
+            // Jwt token has not been tampered with
+            Jws<Claims> claims = Jwts.parser().setSigningKey(secret).parseClaimsJws(authToken);
+            return true;
+        } catch (SignatureException | MalformedJwtException | UnsupportedJwtException | IllegalArgumentException ex) {
+            throw new BadCredentialsException("INVALID_CREDENTIALS", ex);
+        } catch (ExpiredJwtException ex) {
+            throw ex;
+        }
     }
 
-    public Boolean validateToken(String token, UserDetails userDetails) {
-        final String username = extractUsername(token);
-        return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
+    public String getUsernameFromToken(String token) {
+        Claims claims = Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody();
+
+        return claims.getSubject();
+    }
+
+    public List<SimpleGrantedAuthority> getRolesFromToken(String authToken) {
+        List<SimpleGrantedAuthority> roles = null;
+        Claims claims = Jwts.parser().setSigningKey(secret).parseClaimsJws(authToken).getBody();
+        Boolean isAdmin = claims.get("isAdmin", Boolean.class);
+        Boolean isUser = claims.get("isUser", Boolean.class);
+        if (isAdmin != null && isAdmin == true) {
+            roles = Arrays.asList(new SimpleGrantedAuthority("ROLE_ADMIN"));
+        }
+        if (isUser != null && isUser == true) {
+            roles = Arrays.asList(new SimpleGrantedAuthority("ROLE_USER"));
+        }
+        return roles;
     }
 }
