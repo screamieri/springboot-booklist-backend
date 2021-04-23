@@ -20,6 +20,8 @@ public class BookService {
     @Autowired
     private UserService userService;
 
+
+
     public List<Book> findAllBooks(){
         return bookRepository.findAll();
     }
@@ -49,7 +51,9 @@ public class BookService {
     }
 
     public List<Book> getAllBooksByUserId(String id){
-        return bookRepository.findByUsers_userId(id);
+        List<Book> books = bookRepository.findByUsers_userId(id);
+
+        return books;
     }
 
     public List<User> getAllUsersByBookId(String id){

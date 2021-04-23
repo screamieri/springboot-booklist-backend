@@ -1,13 +1,18 @@
 package com.andreascrimieri.bookapp.BookApp.model;
 
-import javax.persistence.Column;
-import javax.persistence.Embeddable;
+import org.springframework.data.annotation.Id;
+
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Objects;
 
 @Embeddable
 public class UserBookId implements Serializable {
 
+    @Id
+    @Column(name="id",updatable=false,nullable=false)
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    private long associationId;
 
     @Column(name="user_id")
     private String userId;
@@ -20,6 +25,14 @@ public class UserBookId implements Serializable {
     public UserBookId(String userId, String bookId) {
         this.userId = userId;
         this.bookId = bookId;
+    }
+
+    public long getAssociationId() {
+        return associationId;
+    }
+
+    public void setAssociationId(long associationId) {
+        this.associationId = associationId;
     }
 
     public String getUserId() {

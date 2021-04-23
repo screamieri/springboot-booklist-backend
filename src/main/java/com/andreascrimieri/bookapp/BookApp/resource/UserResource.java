@@ -5,6 +5,7 @@ import com.andreascrimieri.bookapp.BookApp.model.Book;
 import com.andreascrimieri.bookapp.BookApp.model.User;
 import com.andreascrimieri.bookapp.BookApp.service.UserService;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -77,11 +78,14 @@ public class UserResource {
     }
 
     private BookDto convertToDto(Book book){
+        modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.LOOSE);
         BookDto bookDto = modelMapper.map(book, BookDto.class);
+        //UserBook user = book.getUsers().stream().map(Optional::ofNullable).findFirst().orElseGet(Optional::empty).orElse(null);
         return bookDto;
     }
 
     private Book converToEntity(BookDto bookDto) throws ParseException{
+        modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.LOOSE);
         Book post = modelMapper.map(bookDto, Book.class);
         return post;
     }

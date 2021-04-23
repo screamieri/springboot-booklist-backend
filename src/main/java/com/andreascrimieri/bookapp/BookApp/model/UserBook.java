@@ -1,5 +1,7 @@
 package com.andreascrimieri.bookapp.BookApp.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.Date;
 import java.util.Objects;
@@ -9,18 +11,33 @@ public class UserBook {
 
 
     @EmbeddedId
+    @JsonIgnore
     private UserBookId id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @MapsId("userId")
+    @JsonIgnore
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @MapsId("bookId")
+    @JsonIgnore
     private Book book;
 
     @Column(name="added_on")
     private Date dateAdded = new Date();
+
+    @Column(name="rating")
+    private Integer rating;
+
+    @Column(name="currentPage")
+    private Integer currentPage;
+
+    @Enumerated(EnumType.STRING)
+    private Status status;
+
+    @Column(name="read_at")
+    private Date readAt;
 
     public UserBook() {
     }
@@ -63,6 +80,38 @@ public class UserBook {
         this.dateAdded = dateAdded;
     }
 
+    public Integer getRating() {
+        return rating;
+    }
+
+    public void setRating(Integer rating) {
+        this.rating = rating;
+    }
+
+    public Integer getCurrentPage() {
+        return currentPage;
+    }
+
+    public void setCurrentPage(Integer currentPage) {
+        this.currentPage = currentPage;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
+    }
+
+    public Date getReadAt() {
+        return readAt;
+    }
+
+    public void setReadAt(Date readAt) {
+        this.readAt = readAt;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -75,5 +124,19 @@ public class UserBook {
     @Override
     public int hashCode() {
         return Objects.hash(user, book);
+    }
+
+    @Override
+    public String toString() {
+        return "UserBook{" +
+                "id=" + id +
+                ", user=" + user +
+                ", book=" + book +
+                ", dateAdded=" + dateAdded +
+                ", rating=" + rating +
+                ", currentPage=" + currentPage +
+                ", status=" + status +
+                ", readAt=" + readAt +
+                '}';
     }
 }

@@ -38,6 +38,8 @@ public class Book implements Serializable {
     private LocalDate publishDate;
     @Column(name="imagePath", nullable=true)
     private String imageUrl;
+    @Column(name="pageCount", nullable=true)
+    private Integer pageCount;
 
     @OneToMany(
             mappedBy = "book",
@@ -219,7 +221,7 @@ public class Book implements Serializable {
     public Book() {
     }
 
-    public Book(String isbn, String isbn13, String title, String author, String publisher, String genre, String description, LocalDate publishDate, String imageUrl, Set<UserBook> users) {
+    public Book(String isbn, String isbn13, String title, String author, String publisher, String genre, String description, LocalDate publishDate, String imageUrl, Set<UserBook> users, Integer pageCount) {
         this.isbn = isbn;
         this.isbn13 = isbn13;
         this.title = title;
@@ -230,9 +232,10 @@ public class Book implements Serializable {
         this.publishDate = publishDate;
         this.imageUrl = imageUrl;
         this.users = users;
+        this.pageCount = pageCount;
     }
 
-    public Book(String id, String isbn, String isbn13, String title, String author, String publisher, String genre, String description, LocalDate publishDate, String imageUrl, Set<UserBook> users) {
+    public Book(String id, String isbn, String isbn13, String title, String author, String publisher, String genre, String description, LocalDate publishDate, String imageUrl, Set<UserBook> users, Integer pageCount) {
         this.id = id;
         this.isbn = isbn;
         this.isbn13 = isbn13;
@@ -244,6 +247,7 @@ public class Book implements Serializable {
         this.publishDate = publishDate;
         this.imageUrl = imageUrl;
         this.users = users;
+        this.pageCount = pageCount;
     }
 
     public String getId() {
@@ -334,6 +338,14 @@ public class Book implements Serializable {
         this.users = users;
     }
 
+    public int getPageCount() {
+        return pageCount;
+    }
+
+    public void setPageCount(Integer pageCount) {
+        this.pageCount = pageCount;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -348,5 +360,23 @@ public class Book implements Serializable {
     @Override
     public int hashCode() {
         return Objects.hash(isbn, title, author, publishDate);
+    }
+
+    @Override
+    public String toString() {
+        return "Book{" +
+                "id='" + id + '\'' +
+                ", isbn='" + isbn + '\'' +
+                ", isbn13='" + isbn13 + '\'' +
+                ", title='" + title + '\'' +
+                ", author='" + author + '\'' +
+                ", publisher='" + publisher + '\'' +
+                ", genre='" + genre + '\'' +
+                ", description='" + description + '\'' +
+                ", publishDate=" + publishDate +
+                ", imageUrl='" + imageUrl + '\'' +
+                ", pageCount=" + pageCount +
+                ", users=" + users +
+                '}';
     }
 }

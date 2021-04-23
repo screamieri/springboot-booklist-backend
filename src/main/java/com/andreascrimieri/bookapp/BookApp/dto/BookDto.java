@@ -1,5 +1,11 @@
 package com.andreascrimieri.bookapp.BookApp.dto;
 
+import com.andreascrimieri.bookapp.BookApp.model.UserBook;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import java.util.HashSet;
+import java.util.Set;
+
 public class BookDto {
 
     private String id;
@@ -11,7 +17,21 @@ public class BookDto {
     private String genre;
     private String publishDate;
     private String imageUrl;
+    private Integer pageCount;
+    @JsonProperty("details")
+    private Set<UserBook> users = new HashSet<>();
 
+    public void setPageCount(Integer pageCount) {
+        this.pageCount = pageCount;
+    }
+
+    public Set<UserBook> getUsers() {
+        return users;
+    }
+
+    public void setUsers(Set<UserBook> users) {
+        this.users = users;
+    }
 
     public String getId() {
         return id;
@@ -83,5 +103,13 @@ public class BookDto {
 
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
+    }
+
+    public int getPageCount() {
+        return pageCount;
+    }
+
+    public void setPageCount(int pageCount) {
+        this.pageCount = pageCount;
     }
 }
