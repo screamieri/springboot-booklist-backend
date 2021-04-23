@@ -10,7 +10,7 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
-@Entity
+@Entity(name="Book")
 @Table(name ="book")
 public class Book implements Serializable {
 
@@ -36,9 +36,21 @@ public class Book implements Serializable {
     private String description;
     @Column(name="publishDate", nullable=false)
     private LocalDate publishDate;
-    @Column(name="imagePath", nullable=false)
+    @Column(name="imagePath", nullable=true)
     private String imageUrl;
 
+    @OneToMany(
+            mappedBy = "book",
+            cascade = {
+                    CascadeType.PERSIST,
+                    CascadeType.MERGE
+            },
+            orphanRemoval = true
+    )
+    @JsonIgnore
+    private Set<UserBook> users = new HashSet<>();
+
+    /*
     @ManyToMany(mappedBy = "books")
     @JsonIgnore
     private Set<User> users = new HashSet<>();
@@ -201,5 +213,140 @@ public class Book implements Serializable {
     @Override
     public int hashCode() {
         return Objects.hash(isbn, title, author, publisher, publishDate);
+    }
+    */
+
+    public Book() {
+    }
+
+    public Book(String isbn, String isbn13, String title, String author, String publisher, String genre, String description, LocalDate publishDate, String imageUrl, Set<UserBook> users) {
+        this.isbn = isbn;
+        this.isbn13 = isbn13;
+        this.title = title;
+        this.author = author;
+        this.publisher = publisher;
+        this.genre = genre;
+        this.description = description;
+        this.publishDate = publishDate;
+        this.imageUrl = imageUrl;
+        this.users = users;
+    }
+
+    public Book(String id, String isbn, String isbn13, String title, String author, String publisher, String genre, String description, LocalDate publishDate, String imageUrl, Set<UserBook> users) {
+        this.id = id;
+        this.isbn = isbn;
+        this.isbn13 = isbn13;
+        this.title = title;
+        this.author = author;
+        this.publisher = publisher;
+        this.genre = genre;
+        this.description = description;
+        this.publishDate = publishDate;
+        this.imageUrl = imageUrl;
+        this.users = users;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getIsbn() {
+        return isbn;
+    }
+
+    public void setIsbn(String isbn) {
+        this.isbn = isbn;
+    }
+
+    public String getIsbn13() {
+        return isbn13;
+    }
+
+    public void setIsbn13(String isbn13) {
+        this.isbn13 = isbn13;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
+    }
+
+    public String getPublisher() {
+        return publisher;
+    }
+
+    public void setPublisher(String publisher) {
+        this.publisher = publisher;
+    }
+
+    public String getGenre() {
+        return genre;
+    }
+
+    public void setGenre(String genre) {
+        this.genre = genre;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public LocalDate getPublishDate() {
+        return publishDate;
+    }
+
+    public void setPublishDate(LocalDate publishDate) {
+        this.publishDate = publishDate;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
+    public Set<UserBook> getUsers() {
+        return users;
+    }
+
+    public void setUsers(Set<UserBook> users) {
+        this.users = users;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Book)) return false;
+        Book book = (Book) o;
+        return Objects.equals(isbn, book.isbn) &&
+                Objects.equals(title, book.title) &&
+                Objects.equals(author, book.author) &&
+                Objects.equals(publishDate, book.publishDate);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(isbn, title, author, publishDate);
     }
 }

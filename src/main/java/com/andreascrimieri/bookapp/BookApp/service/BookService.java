@@ -49,7 +49,7 @@ public class BookService {
     }
 
     public List<Book> getAllBooksByUserId(String id){
-        return bookRepository.findByUsers_id(id);
+        return bookRepository.findByUsers_userId(id);
     }
 
     public List<User> getAllUsersByBookId(String id){

@@ -1,14 +1,18 @@
 package com.andreascrimieri.bookapp.BookApp.resource;
 
+import com.andreascrimieri.bookapp.BookApp.dto.BookDto;
 import com.andreascrimieri.bookapp.BookApp.model.Book;
 import com.andreascrimieri.bookapp.BookApp.model.User;
 import com.andreascrimieri.bookapp.BookApp.service.UserService;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.ParseException;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @CrossOrigin("http://localhost:4200")
@@ -17,6 +21,9 @@ public class UserResource {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private ModelMapper modelMapper;
 
     @GetMapping("/all")
     public ResponseEntity<List<User>> getAllUsers(){
@@ -49,9 +56,12 @@ public class UserResource {
     }
 
     @GetMapping("/{id}/books")
-    public ResponseEntity<List<Book>> getAllUserBooks(@PathVariable("id") String id){
+    public ResponseEntity<List<BookDto>> getAllUserBooks(@PathVariable("id") String id){
         List<Book> books = userService.findAllBooksForUser(id);
-        return new ResponseEntity<>(books, HttpStatus.OK);
+        List<BookDto> booksDto = books.stream()
+                .map(this::convertToDto)
+                .collect(Collectors.toList());
+        return new ResponseEntity<>(booksDto, HttpStatus.OK);
     }
 
     @PutMapping("/{user_id}/book/{book_id}")
@@ -64,6 +74,16 @@ public class UserResource {
     public ResponseEntity<User> addUserBook(@PathVariable("user_id") String userId, @RequestBody Book book){
         User updatedUser = userService.addBookToUser(userId, book);
         return new ResponseEntity<>(updatedUser, HttpStatus.OK);
+    }
+
+    private BookDto convertToDto(Book book){
+        BookDto bookDto = modelMapper.map(book, BookDto.class);
+        return bookDto;
+    }
+
+    private Book converToEntity(BookDto bookDto) throws ParseException{
+        Book post = modelMapper.map(bookDto, Book.class);
+        return post;
     }
 
 }
