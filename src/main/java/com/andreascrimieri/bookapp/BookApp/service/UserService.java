@@ -67,6 +67,13 @@ public class UserService {
         return user;
     }
 
+    public void deleteBookFromUser(String userId, String bookId){
+        User user = this.findUserById(userId);
+        Book book = this.bookService.findBookById(bookId);
+        user.removeBook(book);
+        userRepository.save(user);
+    }
+
 
     public List<Book> findAllBooksForUser(String id){
         return bookService.getAllBooksByUserId(id);
@@ -75,7 +82,6 @@ public class UserService {
     public List<User> findAllUsersForBook(String id){
         return userRepository.findByBooks_id(id);
     }
-
 
 
 }

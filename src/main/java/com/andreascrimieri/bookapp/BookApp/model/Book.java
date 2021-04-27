@@ -6,9 +6,7 @@ import org.hibernate.annotations.GenericGenerator;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 @Entity(name="Book")
 @Table(name ="book")
@@ -50,7 +48,7 @@ public class Book implements Serializable {
             orphanRemoval = true
     )
     @JsonIgnore
-    private Set<UserBook> users = new HashSet<>();
+    private List<UserBook> users = new ArrayList<>();
 
     /*
     @ManyToMany(mappedBy = "books")
@@ -221,7 +219,7 @@ public class Book implements Serializable {
     public Book() {
     }
 
-    public Book(String isbn, String isbn13, String title, String author, String publisher, String genre, String description, LocalDate publishDate, String imageUrl, Set<UserBook> users, Integer pageCount) {
+    public Book(String isbn, String isbn13, String title, String author, String publisher, String genre, String description, LocalDate publishDate, String imageUrl, List<UserBook> users, Integer pageCount) {
         this.isbn = isbn;
         this.isbn13 = isbn13;
         this.title = title;
@@ -235,7 +233,7 @@ public class Book implements Serializable {
         this.pageCount = pageCount;
     }
 
-    public Book(String id, String isbn, String isbn13, String title, String author, String publisher, String genre, String description, LocalDate publishDate, String imageUrl, Set<UserBook> users, Integer pageCount) {
+    public Book(String id, String isbn, String isbn13, String title, String author, String publisher, String genre, String description, LocalDate publishDate, String imageUrl, List<UserBook> users, Integer pageCount) {
         this.id = id;
         this.isbn = isbn;
         this.isbn13 = isbn13;
@@ -330,11 +328,11 @@ public class Book implements Serializable {
         this.imageUrl = imageUrl;
     }
 
-    public Set<UserBook> getUsers() {
+    public List<UserBook> getUsers() {
         return users;
     }
 
-    public void setUsers(Set<UserBook> users) {
+    public void setUsers(List<UserBook> users) {
         this.users = users;
     }
 

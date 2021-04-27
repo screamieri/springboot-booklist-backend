@@ -130,8 +130,8 @@ public class UserBook {
     public String toString() {
         return "UserBook{" +
                 "id=" + id +
-                ", user=" + user +
-                ", book=" + book +
+                //", user=" + user +
+                //", book=" + book +
                 ", dateAdded=" + dateAdded +
                 ", rating=" + rating +
                 ", currentPage=" + currentPage +

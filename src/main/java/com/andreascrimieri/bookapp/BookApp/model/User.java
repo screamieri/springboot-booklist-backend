@@ -4,10 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 @Entity(name="User")
 @Table(name ="user")
@@ -135,12 +132,12 @@ public class User {
             orphanRemoval = true
     )
     @JsonIgnore
-    private Set<UserBook> books = new HashSet<>();
+    private List<UserBook> books = new ArrayList<>();
 
     public User() {
     }
 
-    public User(String firstName, String lastName, String email, String password, Set<UserBook> books) {
+    public User(String firstName, String lastName, String email, String password, List<UserBook> books) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -148,7 +145,7 @@ public class User {
         this.books = books;
     }
 
-    public User(String id, String firstName, String lastName, String email, String password, Set<UserBook> books) {
+    public User(String id, String firstName, String lastName, String email, String password, List<UserBook> books) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -197,11 +194,11 @@ public class User {
         this.password = password;
     }
 
-    public Set<UserBook> getBooks() {
+    public List<UserBook> getBooks() {
         return books;
     }
 
-    public void setBooks(Set<UserBook> books) {
+    public void setBooks(List<UserBook> books) {
         this.books = books;
     }
 

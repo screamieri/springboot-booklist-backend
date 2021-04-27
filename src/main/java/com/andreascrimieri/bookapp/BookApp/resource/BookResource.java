@@ -55,7 +55,7 @@ public class BookResource {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @CrossOrigin(origins="http://localhost:4200/")
+
     @GetMapping("/{book_id}/users")
     public ResponseEntity<List<User>> getAllUsersWithBook(@PathVariable("book_id") String id){
         List<User> users = bookService.getAllUsersByBookId(id);

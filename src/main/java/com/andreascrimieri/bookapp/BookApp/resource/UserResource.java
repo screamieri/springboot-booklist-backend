@@ -3,9 +3,9 @@ package com.andreascrimieri.bookapp.BookApp.resource;
 import com.andreascrimieri.bookapp.BookApp.dto.BookDto;
 import com.andreascrimieri.bookapp.BookApp.model.Book;
 import com.andreascrimieri.bookapp.BookApp.model.User;
+import com.andreascrimieri.bookapp.BookApp.model.UserBook;
 import com.andreascrimieri.bookapp.BookApp.service.UserService;
 import org.modelmapper.ModelMapper;
-import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -37,12 +37,6 @@ public class UserResource {
         User user = userService.findUserById(id);
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
-
-    /*@PostMapping("/add")
-    public ResponseEntity<User> addUser(@RequestBody User user){
-        User newUser = userService.addUser(user);
-        return new ResponseEntity<>(newUser, HttpStatus.CREATED);
-    }*/
 
     @PutMapping("/update")
     public ResponseEntity<User> updateUser(@RequestBody User user){
@@ -77,17 +71,26 @@ public class UserResource {
         return new ResponseEntity<>(updatedUser, HttpStatus.OK);
     }
 
+    @DeleteMapping("/{user_id}/book/{book_id}")
+    public ResponseEntity<?> removeBookFromUser(@PathVariable("user_id") String userId, @PathVariable("book_id") String bookId){
+        userService.deleteBookFromUser(userId, bookId);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
     private BookDto convertToDto(Book book){
-        modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.LOOSE);
+        //modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.LOOSE);
         BookDto bookDto = modelMapper.map(book, BookDto.class);
-        //UserBook user = book.getUsers().stream().map(Optional::ofNullable).findFirst().orElseGet(Optional::empty).orElse(null);
+        ///UserBook user = book.getUsers().stream().map(Optional::ofNullable).findFirst().orElseGet(Optional::empty).orElse(null);
+        UserBook user = book.getUsers().get(0);
+        bookDto.setBookDetails(user);
         return bookDto;
     }
 
-    private Book converToEntity(BookDto bookDto) throws ParseException{
-        modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.LOOSE);
-        Book post = modelMapper.map(bookDto, Book.class);
-        return post;
+    private Book convertToEntity(BookDto bookDto) throws ParseException{
+        //modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.LOOSE);
+        Book book = modelMapper.map(bookDto, Book.class);
+
+        return book;
     }
 
 }
