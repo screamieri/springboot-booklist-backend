@@ -15,6 +15,7 @@ public class BookDto {
     private String publishDate;
     private String imageUrl;
     private Integer pageCount;
+    private String description;
     @JsonProperty("details")
     private BookDetailsDto bookDetails;
 
@@ -108,5 +109,13 @@ public class BookDto {
 
     public void setPageCount(int pageCount) {
         this.pageCount = pageCount;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }
